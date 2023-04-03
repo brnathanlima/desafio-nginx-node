@@ -3,7 +3,7 @@ const app = express();
 
 app.get('/', (req, resp) => {
     const config = {
-        host: "db-desafio-node-nginx",
+        host: "db_desafio_nginx_node_brnathanlima",
         user: "root",
         password: "root",
         database: "desafio_node_nginx"
