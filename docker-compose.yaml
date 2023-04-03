@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: db_desafio_nginx_node_brnathanlima
+    ports:
+      - 3306:3306
+    tty: true
+    restart: always
+    volumes:
+      - ./mysql/volume:/var/lib/mysql/
+      - ./mysql/data:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_DATABASE=desafio_node_nginx
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - desafio-nginx-node-brnathanlima
+
+  app:
+    build:
+      context: app
+    container_name: app_desafio_nginx_node_brnathanlima
+    restart: always
+    volumes:
+      - ./app/:/usr/src/app/
+      - /usr/src/app/node_modules
+    tty: true
+    depends_on:
+      - db
+    networks:
+      - desafio-nginx-node-brnathanlima
+  
+  webserver:
+    build:
+      context: nginx
+    container_name: proxy_reverso_desafio_nginx_node_brnathanlima
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+    networks:
+      - desafio-nginx-node-brnathanlima
+
+networks:
+  desafio-nginx-node-brnathanlima:
+    driver: bridge
