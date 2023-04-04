@@ -22,6 +22,7 @@ services:
       context: app
     container_name: app_desafio_nginx_node_brnathanlima
     restart: always
+    entrypoint: wait-for db_desafio_nginx_node_brnathanlima:3306 -t 40 -- ./start.sh
     volumes:
       - ./app/:/usr/src/app/
       - /usr/src/app/node_modules
